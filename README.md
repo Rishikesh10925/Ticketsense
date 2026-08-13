@@ -76,6 +76,16 @@ docs/          architecture and research evaluation protocol
 docker-compose.yml
 ```
 
+## Research datasets
+
+TicketSense keeps its evaluation sources explicit and separates them from application code. The repository uses three data groups:
+
+- **Public IT-support ticket data** for non-commercial classification and routing research.
+- **Synthetic knowledge-base articles** for SAP, Networking, Cloud and HR retrieval evaluation.
+- **Public screenshots and system logs** for attachment/OCR and log-ingestion demonstrations.
+
+See [`data/README.md`](data/README.md) for provenance, licenses, permitted use and reproducibility details. Dataset presence does not mean a model was pretrained by this project, and none of these evaluation files should be treated as confidential company data.
+
 ## Development checks
 
 ```bash

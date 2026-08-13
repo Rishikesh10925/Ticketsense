@@ -1,4 +1,16 @@
-# Bulk test data
+# TicketSense data catalogue
+
+This directory separates downloaded public research corpora from TicketSense-authored evaluation fixtures. Every external source must have a traceable upstream URL, license or usage terms, and checksum before it is used or redistributed.
+
+| Data group | Repository location | Origin | Intended use |
+|---|---|---|---|
+| Public IT-support tickets | `data/external/public-it-support-tickets/` | Downloaded public corpus | Non-commercial routing/classification research |
+| Synthetic knowledge base | `db/seed/knowledge_base/` | TicketSense-authored articles | Retrieval and grounded-answer evaluation |
+| Screenshots and logs | `data/external/attachment-fixtures/` | Downloaded public research samples | OCR, parsing and attachment-ingestion demonstrations |
+
+External data is not loaded automatically by Docker Compose. Application seed data remains under `db/seed/`, and existing import utilities remain opt-in.
+
+## Bulk test data
 
 ## synthetic_labeled_tickets.py (current — use this one)
 
