@@ -4,6 +4,8 @@ TicketSense is an enterprise-grade, multi-tenant, multi-agent AI support intelli
 
 Development status: the secure Phase 1 foundation is actively being expanded with tenant-scoped queues, human review workflows, and audited ticket routing.
 
+For the most consistent local setup, run TicketSense through Docker Compose so the API, pgvector database, migrations, seed data, and web application start together.
+
 ## Run locally
 
 Requirements: Docker Desktop with Compose v2.
