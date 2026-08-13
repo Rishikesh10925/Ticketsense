@@ -2,6 +2,8 @@
 
 TicketSense is an enterprise-grade, multi-tenant, multi-agent AI support intelligence platform that turns support tickets into explainable, evidence-grounded, confidence-aware resolutions while converting successful support interactions into organizational knowledge.
 
+Development status: the secure Phase 1 foundation is actively being expanded with tenant-scoped queues, human review workflows, and audited ticket routing.
+
 ## Run locally
 
 Requirements: Docker Desktop with Compose v2.
@@ -14,6 +16,7 @@ docker compose up --build
 - Web application: http://localhost:3000
 - FastAPI/OpenAPI: http://localhost:8000/docs
 - Health check: http://localhost:8000/api/health
+- Readiness check: http://localhost:8000/api/health/ready
 
 Compose starts pgvector/PostgreSQL, applies all Alembic migrations, creates development accounts, loads the curated knowledge base, starts FastAPI, and serves the production React build.
 
@@ -25,11 +28,13 @@ All development accounts use `Demo@123`.
 |---|---|
 | Customer | `customer@demo.com` |
 | Support agent | `agent@demo.com` |
-| Manager | `manager@demo.com` |
-| Enterprise admin | `admin@demo.com` |
-| AI administrator | `aiadmin@demo.com` |
-| Knowledge manager | `knowledge@demo.com` |
-| Security administrator | `security@demo.com` |
+| Reviewer | `reviewer@demo.com` |
+| Knowledge manager | `kbmanager@demo.com` |
+| Team lead | `teamlead@demo.com` |
+| System administrator | `sysadmin@demo.com` |
+| Auditor | `auditor@demo.com` |
+
+Legacy `manager@demo.com`, `admin@demo.com`, `aiadmin@demo.com`, `knowledge@demo.com`, and `security@demo.com` remain available for compatibility.
 
 Never use these credentials outside local development.
 
@@ -89,4 +94,23 @@ Individual techniques such as classification, RAG and routing are established. T
 
 ## Security notes
 
-JWTs, bcrypt, tenant checks, RBAC, input validation, PII redaction, rate limiting, CORS, security headers and audit records are included. Change `JWT_SECRET_KEY`, database credentials, allowed origins and provider secrets before any non-local deployment. Secrets must remain server-side.
+Short-lived JWT access tokens, rotating HTTP-only refresh cookies, hashed revocable sessions, CSRF double-submit protection, bcrypt, tenant/department checks, normalized RBAC, PII redaction, rate limiting, strict configured CORS, security headers and audit records are included. Change `JWT_SECRET_KEY`, database credentials, allowed origins and provider secrets before any non-local deployment. Set `COOKIE_SECURE=true` behind HTTPS. Secrets must remain server-side.
+
+## Login troubleshooting
+
+The observed browser message `Failed to fetch` occurred because the API container had exited with code 137 while nginx remained reachable. Rebuild/start with `docker compose up --build -d`, then use `docker compose ps` and `docker compose logs api --tail 200`. The production frontend is compiled with `VITE_API_URL=http://localhost:8000`; this is intentionally the browser-visible host URL, not the Docker-internal service name.
+
+Migration startup order is database health -> Alembic head -> idempotent seed -> knowledge load -> API -> API readiness -> web. Migration `0005` adds normalized roles, permissions, mappings, scoped user roles, and hashed refresh sessions. Migration `0006` adds persistent failed-login counters and timed account lockouts. Migration `0007` adds assignment, triage, review metadata, immutable human reviews, queue indexes, and an idempotent audited repair for legacy unrouted tickets. The API periodically deletes sessions expired for more than seven days.
+
+Staff queues are available through `/api/queues/{queue_type}`. Agent queue types are `assigned`, `department_triage`, `general_triage`, `all`, and `escalated`; reviewers use `review`, and team leads use department-scoped `all`/`escalated`. Ticket list, queue, and direct-ID access share the same tenant/ownership/department visibility policy.
+
+Docker validation commands:
+
+```powershell
+docker compose up --build -d
+docker compose ps
+docker compose exec api alembic current
+docker compose exec api pytest -q
+docker compose build web
+Invoke-RestMethod http://localhost:8000/api/health/ready
+```
