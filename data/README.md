@@ -24,6 +24,25 @@ The application does not train automatically from this file. A checked-in datase
 
 Loghub describes its datasets as research/academic resources and requests repository attribution and paper citation. The HDFS sample is therefore not approved here for unrestricted commercial redistribution. GB82-SC is CC0, and its upstream license is preserved beside the screenshot. Detailed links and checksums are in the fixture README.
 
+### Synthetic knowledge base
+
+The 48 Markdown articles under `db/seed/knowledge_base/` are repository-authored evaluation content: 12 articles each for Cloud, HR, Networking and SAP. They are not scraped from a vendor knowledge portal and must not be presented as official SAP, cloud-provider, networking-vendor or HR policy documentation.
+
+Their role is to test tenant-scoped retrieval, citations, answer grounding and knowledge-gap workflows. They are evaluation fixtures—not a pretrained model, not confidential enterprise data and not a replacement for reviewed operational procedures.
+
+## Reproducibility checklist
+
+Before using any external artifact:
+
+1. Read its local README and upstream usage terms.
+2. Recalculate SHA-256 with `Get-FileHash <path> -Algorithm SHA256` in PowerShell.
+3. Confirm the hash matches the value recorded in the relevant README.
+4. Keep non-commercial and research-only sources out of commercial model training.
+5. Scan imported ticket text and attachments for privacy risks before exposing them to users or third-party AI providers.
+6. Record any filtering, split, label mapping or normalization performed during an experiment.
+
+Current external artifacts are intentionally disconnected from automatic startup. This prevents a normal `docker compose up` from silently importing research data into the application database.
+
 ## Bulk test data
 
 ## synthetic_labeled_tickets.py (current — use this one)
