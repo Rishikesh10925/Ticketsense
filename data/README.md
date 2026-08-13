@@ -18,6 +18,12 @@ The corpus is licensed **CC BY-NC 4.0**, so it must not be used for commercial t
 
 The application does not train automatically from this file. A checked-in dataset proves reproducibility of an experiment; it does not prove that a deployed confidence score came from a trained model.
 
+### Public attachment fixtures
+
+`data/external/attachment-fixtures/` contains one 2,000-line Loghub HDFS sample and one CC0 terminal screenshot from GB82-SC. They provide stable inputs for log parsing, upload, preview and OCR integration tests without inventing company evidence.
+
+Loghub describes its datasets as research/academic resources and requests repository attribution and paper citation. The HDFS sample is therefore not approved here for unrestricted commercial redistribution. GB82-SC is CC0, and its upstream license is preserved beside the screenshot. Detailed links and checksums are in the fixture README.
+
 ## Bulk test data
 
 ## synthetic_labeled_tickets.py (current — use this one)
