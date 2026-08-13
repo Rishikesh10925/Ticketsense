@@ -10,6 +10,14 @@ This directory separates downloaded public research corpora from TicketSense-aut
 
 External data is not loaded automatically by Docker Compose. Application seed data remains under `db/seed/`, and existing import utilities remain opt-in.
 
+### Public ticket corpus
+
+The checked-in public corpus contains **28,587 records** in English and German. Its source fields include `subject`, `body`, `answer`, `type`, `queue`, `priority`, `language`, `version` and topic tags. It is useful for offline experiments involving ticket classification, priority prediction, queue routing and answer retrieval.
+
+The corpus is licensed **CC BY-NC 4.0**, so it must not be used for commercial training or production deployment without separate permission. It is also broader than TicketSense's SAP, Networking, Cloud and HR taxonomy. Any experimental mapping must be measured and documented rather than silently treating upstream queues as equivalent departments.
+
+The application does not train automatically from this file. A checked-in dataset proves reproducibility of an experiment; it does not prove that a deployed confidence score came from a trained model.
+
 ## Bulk test data
 
 ## synthetic_labeled_tickets.py (current — use this one)
